@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Blog Post Generator</title>
+  <link rel="stylesheet" href="C:\Users\USER_ROOT\Desktop\v5\static\style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🧠 AI-Powered Blog Post Generator</h1>
+
+    <form id="blog-form">
+      <label for="prompt">Enter your blog topic:</label>
+      <textarea id="prompt" name="prompt" required placeholder="e.g. How AI is Changing Education..."></textarea>
+      <button type="submit">Generate Blog</button>
+    </form>
+
+    <div id="output"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("blog-form");
+    const output = document.getElementById("output");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const prompt = document.getElementById("prompt").value;
+      output.innerHTML = "⏳ Generating blog post...";
+
+      try {
+        const response = await fetch("/generate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ prompt }),
+        });
+
+        const data = await response.json();
+        output.innerHTML = `<h2>📝 Generated Blog:</h2><p>${data.blog.replace(/\n/g, "<br>")}</p>`;
+      } catch (err) {
+        output.innerHTML = "❌ Error generating blog post. Please try again.";
+      }
+    });
+  </script>
+</body>
+</html>
